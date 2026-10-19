@@ -1,4 +1,3 @@
-Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 import type { Metadata } from "next";
 import "./globals.css";
 
