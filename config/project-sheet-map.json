@@ -1,4 +1,3 @@
-Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 {
   "$schema": "./project-sheet-map.schema.json",
   "description": "案件ごとのGoogleスプレッドシート接続先。spreadsheetIdEnvには.envで定義する環境変数名を書きます。",
