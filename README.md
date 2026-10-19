@@ -1,4 +1,3 @@
-Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 # 定例会議AIエージェント「ミーテ」
 
 自治体ごとの案件を1件ずつ確認し、録音・文字起こし・AI整理・人による修正・Google Sheets保存までを支援するWebアプリです。Googleスプレッドシートを唯一の正本とし、アプリ自身は案件や会議履歴を永続保存しません。
