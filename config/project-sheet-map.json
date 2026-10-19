@@ -1,0 +1,20 @@
+Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
+{
+  "$schema": "./project-sheet-map.schema.json",
+  "description": "案件ごとのGoogleスプレッドシート接続先。spreadsheetIdEnvには.envで定義する環境変数名を書きます。",
+  "defaults": {
+    "masterSheet": "案件マスタ",
+    "historySheet": "定例履歴",
+    "todoSheet": "ToDo"
+  },
+  "projects": {
+    "GIN-001": { "municipality": "宜野湾市", "name": "RPCA", "spreadsheetIdEnv": "SHEET_ID_GINOWAN" },
+    "GIN-002": { "municipality": "宜野湾市", "name": "RDS再構築", "spreadsheetIdEnv": "SHEET_ID_GINOWAN" },
+    "GIN-003": { "municipality": "宜野湾市", "name": "UPS警報", "spreadsheetIdEnv": "SHEET_ID_GINOWAN" },
+    "GIN-004": { "municipality": "宜野湾市", "name": "端末更新", "spreadsheetIdEnv": "SHEET_ID_GINOWAN" },
+    "NAN-001": { "municipality": "南城市", "name": "サンプル案件", "spreadsheetIdEnv": "SHEET_ID_NANJO" },
+    "KUN-001": { "municipality": "国頭村", "name": "サンプル案件", "spreadsheetIdEnv": "SHEET_ID_KUNIGAMI" },
+    "YON-001": { "municipality": "与那国町", "name": "サンプル案件", "spreadsheetIdEnv": "SHEET_ID_YONAGUNI" }
+  }
+}
+
