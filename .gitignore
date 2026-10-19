@@ -1,0 +1,11 @@
+Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
+node_modules/
+.next/
+dist/
+.env
+.env.local
+.dev.vars
+.wrangler/
+.sites-runtime/
+*.log
+
