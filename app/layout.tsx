@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ミーテ｜定例会議AIエージェント",
-  description: "会議を見て、進捗を見て、次の一歩まで支える定例会議AIエージェント。",
+  title: "進む君｜定例会議AIエージェント",
+  description: "話すだけで会議のやるべきことが見えて動き出す、頼れる定例会議パートナー。",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
