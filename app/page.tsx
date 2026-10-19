@@ -1,4 +1,3 @@
-Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 "use client";
 import Image from "next/image";
 import {useEffect,useRef,useState} from "react";
