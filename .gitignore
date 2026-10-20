@@ -1,6 +1,9 @@
 node_modules/
+node_modules.broken/
 .next/
 dist/
+next-env.d.ts
+*.tsbuildinfo
 .env
 .env.local
 .dev.vars

@@ -1,24 +1,46 @@
 # 定例会議AIエージェント「進む君」
 
-自治体ごとの案件を1件ずつ確認し、録音・文字起こし・AI整理・人による修正・Google Sheets保存までを支援するWebアプリです。Googleスプレッドシートを唯一の正本とし、アプリ自身は案件や会議履歴を永続保存しません。
+自治体ごとの案件を1件ずつ確認し、ブラウザ録音・文字起こし・AI整理・人による修正・Google Sheets保存までを支援するWebアプリです。Googleスプレッドシートを唯一の正本とし、アプリ自身は案件や会議履歴を永続保存しません。
 
 「進む君」は、会議を話すだけで終わらせず、決定事項と次の行動をやさしく整理して前へ進める会議パートナーです。親しみやすく頼れる“少しおじさん”のキャラクターと、木目・付箋を取り入れた温かいUIを採用しています。
 
 ## 使用技術
 
-- Next.js / React / TypeScript / Vinext (Cloudflare Workers)
-- MediaRecorder API（案件単位の録音）
-- OpenAI API（文字起こし、構造化要約）
+- Next.js / React / TypeScript / Vinext（Cloudflare Worker）
+- MediaRecorder API（案件単位のブラウザ録音）
+- Cloudflare Workers AI binding（文字起こし、構造化要約）
+- `@cf/openai/whisper-large-v3-turbo`（日本語文字起こし）
+- `@cf/meta/llama-3.1-8b-instruct-fast`（JSON要約）
 - Google Sheets API（読込・更新・履歴追加）
+
+## 構成と保存方針
+
+```text
+Webブラウザ → Webアプリ → Cloudflare Worker → Workers AI → Googleスプレッドシート
+```
+
+- ユーザーPCへのPython、Whisper、Ollama、Node.js、AIモデルのインストールは不要です。
+- R2、KV、Durable Objects、D1、Vectorizeを使用しません。
+- AI Gatewayを使用しません。プロンプト／レスポンスのキャッシュやログも作成しません。
+- 音声はブラウザメモリと1回のHTTPリクエスト内だけで扱い、処理完了後に破棄します。
+- AI結果は自動確定せず、ユーザーが確認した後だけGoogleスプレッドシートへ保存します。
+- アプリログには処理時刻、成否、HTTPステータス、処理時間だけを出します。
+
+## 無料運用の必須条件
+
+Cloudflareアカウントは **Workers Free Planのまま** 使用してください。Workers Paid、AI GatewayのUnified Billing、プリペイドクレジットを有効にしないでください。Free Planの1日10,000 Neuronsを使い切るとWorkers AIがHTTP 429（内部コード3036）を返し、アプリは「本日のAI無料利用枠を超えました。翌日以降に再度お試しください。」と表示して停止します。有料AIへのフォールバックは実装していません。
+
+通常のWorkers AI推論のみを使用します。CloudflareのWorkers AIデータ利用方針ではCustomer Contentをモデル学習に使用せず、標準推論の入力・出力は処理に必要な期間を超えて保持しないとされています。状態を保存するCloudflare機能は構成に含めていません。
 
 ## セットアップ
 
 1. `npm install`
 2. `.env.example` を `.env.local` にコピー
-3. `OPENAI_API_KEY`、`GOOGLE_SERVICE_ACCOUNT_JSON`、案件別の `SHEET_ID_*` を設定
-4. `npm run dev`
+3. `GOOGLE_SERVICE_ACCOUNT_JSON`、案件別の `SHEET_ID_*` を設定
+4. Cloudflare Workers AI binding名を `AI` にしてWorkers Free Planへデプロイ
+5. `npm run dev`
 
-APIキーやサービスアカウント情報をクライアントコードへ記載しないでください。`.env*` はGit対象外です。Googleサービスアカウントには対象スプレッドシートの編集権限を共有します。
+サービスアカウント情報をクライアントコードへ記載しないでください。`.env*` はGit対象外です。本番ではCloudflare Worker secret `GOOGLE_SERVICE_ACCOUNT_JSON` と案件別 `SHEET_ID_*` を設定します。Googleサービスアカウントには対象スプレッドシートの編集権限だけを共有します。
 
 ## 案件ごとの接続先設定（ここを編集）
 
@@ -60,5 +82,5 @@ SHEET_ID_GINOWAN=1AbCdEf...your-sheet-id
 - マイク許可、録音開始・停止、文字起こし全文の開閉、編集、次案件遷移、最終サマリーを確認
 - Sheets接続失敗、OpenAI失敗、保存失敗時に次案件へ進まないことを確認
 
-現在のUIは、接続情報がない環境でも操作確認できるデモデータを表示します。本番接続時はサーバー側APIから同じ型のデータを渡してください。
+接続情報がない場合は案件データを表示せず、設定エラー画面になります。デモデータを本番データの代わりに保存することはありません。
 
